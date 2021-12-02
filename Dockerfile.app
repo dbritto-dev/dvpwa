@@ -1,18 +1,18 @@
-FROM python:alpine3.8
+FROM python:3.9-slim-buster as builder
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+WORKDIR /app
+COPY requirements.txt ./
+RUN python -m pip install --upgrade pip && python -m pip install -U -r requirements.txt
+RUN rm requirements.txt
 
-RUN apk add --no-cache wget \
-    && wget -O /usr/bin/wait-for https://raw.githubusercontent.com/eficode/wait-for/master/wait-for \
-    && chmod +x /usr/bin/wait-for \
-    && apk del wget
-
-COPY requirements.txt /tmp
-
-RUN apk add --no-cache --virtual build-deps gcc python3-dev musl-dev \
-    && apk add --no-cache postgresql-dev \
-    && pip install -r /tmp/requirements.txt \
-    && apk del build-deps
-
-RUN rm -rf /tmp/requirements.txt
+FROM python:3.9-slim-buster
+WORKDIR /app
+COPY --from=builder /root/.local /root/.local
+COPY . .
+ENV PATH=/root/.local:$PATH
+EXPOSE 8080
+CMD ["python", "run.py"]
 
 WORKDIR /app
 ADD ./run.py /app
