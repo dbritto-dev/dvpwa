@@ -2,7 +2,7 @@ FROM python:3.9-slim-buster as builder
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 WORKDIR /app
-RUN apt-get update -y && apt-get install -y libpq-dev
+RUN apt-get update -y && apt-get install -y gcc python3-dev libpq-dev
 COPY requirements.txt ./
 RUN python -m pip install --upgrade pip && python -m pip install -U -r requirements.txt && rm requirements.txt
 
