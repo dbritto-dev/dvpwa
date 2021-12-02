@@ -9,7 +9,8 @@ COPY requirements.txt /tmp
 
 RUN apk add --no-cache --virtual build-deps gcc python3-dev musl-dev \
     && apk add --no-cache postgresql-dev \
-    && pip install -U -r /tmp/requirements.txt \
+    && python -m pip install --upgrade pip \
+    && python -m pip install -U -r /tmp/requirements.txt \
     && apk del build-deps gcc python3-dev musl-dev
 
 RUN rm -rf /tmp/requirements.txt
