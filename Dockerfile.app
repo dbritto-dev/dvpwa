@@ -2,7 +2,7 @@ FROM python:3.9-slim-buster as builder
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 WORKDIR /app
-RUN apt-get install -y python3-dev
+RUN apt update -y && apt-get install -y python3-dev
 COPY requirements.txt ./
 RUN python -m pip install --upgrade pip && python -m pip install -U -r requirements.txt && rm requirements.txt
 
