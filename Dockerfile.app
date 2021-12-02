@@ -2,6 +2,7 @@ FROM python:3.9-slim-buster as builder
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 WORKDIR /app
+RUN apt install -y python3-dev
 COPY requirements.txt ./
 RUN python -m pip install --upgrade pip && python -m pip install -U -r requirements.txt
 RUN rm requirements.txt
@@ -15,6 +16,6 @@ EXPOSE 8080
 CMD ["python", "run.py"]
 
 WORKDIR /app
-ADD ./run.py /app
-ADD ./sqli /app/sqli
-ADD ./config /app/config
+COPY ./run.py /app
+COPY ./sqli /app/sqli
+COPY ./config /app/config
