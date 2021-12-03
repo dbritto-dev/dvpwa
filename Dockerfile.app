@@ -5,6 +5,7 @@ RUN apk add --no-cache wget \
     && apk del wget
 COPY requirements.txt /tmp
 RUN apk add --no-cache --virtual build-deps gcc python3-dev musl-dev postgresql-dev \
+    && apk add --no-cache libpq \
     && python -m pip install --upgrade pip \
     && python -m pip install -U -r /tmp/requirements.txt \
     && apk del build-deps
